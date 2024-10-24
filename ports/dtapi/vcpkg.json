@@ -4,4 +4,9 @@
   "port-version": 0,
   "homepage": "https://www.dektec.com",
   "description": "DekTec API"
+  "dependencies": 
+  [
+    { "name": "vcpkg-cmake", "host": true },
+    { "name": "vcpkg-cmake-config", "host": true }
+  ]
 }
