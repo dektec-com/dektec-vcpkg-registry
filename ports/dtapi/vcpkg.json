@@ -1,0 +1,7 @@
+{
+  "name": "dtapi",
+  "version-string": "6.6.0",
+  "port-version": 0,
+  "homepage": "https://www.dektec.com",
+  "description": "DekTec API"
+}
