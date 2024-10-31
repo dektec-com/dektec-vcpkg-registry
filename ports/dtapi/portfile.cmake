@@ -5,9 +5,9 @@ if(VCPKG_TARGET_IS_WINDOWS)
   #Step 1: download zip with Windows binaries
   vcpkg_download_distfile(
     ARCHIVE
-    URLS "https://github.com/dektec-projects/dtapi-releases/raw/main/releases/dtapi-v6.6.0-windows.zip"
+    URLS "https://dektec.com/products/SDK/DTAPI/Downloads/dtapi-v6.6.0-windows.zip"
     FILENAME "dtapi-6.6.0-windows.tar.gz"
-    SHA512 abbeb5ee0a61afadd19060409c1ae87f8e66596d2d8cb864dd62e729d43f11c4bbc02bedd97935348c80a8a6e2176bf638c410e63cdd3d79b542cadd801428c0
+    SHA512 0
   )
   
   # Step 2: extract archive with DTAPI
@@ -30,18 +30,16 @@ if(VCPKG_TARGET_IS_WINDOWS)
   endif()
   
   # Which visual studio verions?
-  #if (VCPKG_PLATFORM_TOOLSET STREQUAL "v143")
-  #  set(LIB_SRCDIR "vc17")
-  #elseif (VCPKG_PLATFORM_TOOLSET STREQUAL "v142")
-  #  set(LIB_SRCDIR "vc16")
-  #elseif (VCPKG_PLATFORM_TOOLSET STREQUAL "v141")
-  #  set(LIB_SRCDIR "vc15")
-  #elseif (VCPKG_PLATFORM_TOOLSET STREQUAL "v140")
-  #  set(LIB_SRCDIR "vc14")
-  #else()
-    # Default to VC17 version
+  if (VCPKG_PLATFORM_TOOLSET STREQUAL "v143")
+    set(LIB_SRCDIR "vc17")
+  elseif (VCPKG_PLATFORM_TOOLSET STREQUAL "v142")
     set(LIB_SRCDIR "vc16")
-  #endif()
+  elseif (VCPKG_PLATFORM_TOOLSET STREQUAL "v141")
+    set(LIB_SRCDIR "vc15")
+  else()
+    # Default to VC16 version
+    set(LIB_SRCDIR "vc16")
+  endif()
   
   # Using dynamic or static runtimes
   if (VCPKG_CRT_LINKAGE STREQUAL "dynamic")
@@ -91,11 +89,11 @@ file(INSTALL
     )
 
 # Install - copyright file
-#file(INSTALL
-#     "${SOURCE_PATH}/copyright"
-#     DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT}
-#    )
-#  
+file(INSTALL
+     "${SOURCE_PATH}/share/copyright"
+     DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT}
+    )
+  
 ## Install cmake files
 file(GLOB SHARE_FILES ${SOURCE_PATH}/share/*.cmake)
 foreach(SHARE_FILE ${SHARE_FILES})
