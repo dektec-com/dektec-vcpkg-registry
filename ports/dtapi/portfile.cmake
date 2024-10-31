@@ -4,11 +4,12 @@ vcpkg_check_linkage(ONLY_STATIC_LIBRARY )
 # DTAPI version used by this port file.
 set(DTAPI_VERSION 6.6.0)
 
-# Init variabale for name of library source file to safe initial 
+# Init variabale for name of library source file to safe initial values.
 set(LIB_NAME_BASE "DTAPI")
 set(LIB_NAME_ARCH "")
 set(LIB_NAME_CRT "")
 set(LIB_NAME_EXT "")
+set(LIB_NAME_DBG_SUFFIX "")
 
 # Determine which platform is targetted
 if(VCPKG_TARGET_IS_WINDOWS)
@@ -45,6 +46,7 @@ if(VCPKG_TARGET_IS_WINDOWS)
   endif()
 
   set(LIB_NAME_EXT "lib")
+  set(LIB_NAME_DBG_SUFFIX "d")
   
   #Step 2: download zip with Windows binaries.
   vcpkg_download_distfile(
@@ -72,6 +74,7 @@ elseif(VCPKG_TARGET_IS_LINUX)
   
   set(LIB_NAME_CRT "")
   set(LIB_NAME_EXT "o")
+  set(LIB_NAME_DBG_SUFFIX "")
   
   #Step 2: download zip with Linux binaries.
   vcpkg_download_distfile(
@@ -111,7 +114,7 @@ endforeach()
 
 # Install - debug library
 file(INSTALL
-     "${SOURCE_PATH}/lib/${LIB_SRCDIR}/${LIB_NAME}d.${LIB_NAME_EXT}"
+     "${SOURCE_PATH}/lib/${LIB_SRCDIR}/${LIB_NAME}${LIB_NAME_DBG_SUFFIX}.${LIB_NAME_EXT}"
        DESTINATION ${CURRENT_PACKAGES_DIR}/debug/lib
      RENAME "${LIB_NAME_BASE}.${LIB_NAME_EXT}"
     ) 
