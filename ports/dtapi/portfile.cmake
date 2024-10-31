@@ -2,7 +2,7 @@
 vcpkg_check_linkage(ONLY_STATIC_LIBRARY )
 
 # DTAPI version used by this port file.
-set(DTAPI_VERSION, 6.6.0)
+set(DTAPI_VERSION 6.6.0)
 
 # Init variabale for name of library source file to safe initial 
 set(LIB_NAME_BASE "DTAPI")
