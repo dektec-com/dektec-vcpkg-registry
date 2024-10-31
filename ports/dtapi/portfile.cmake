@@ -7,7 +7,7 @@ if(VCPKG_TARGET_IS_WINDOWS)
     ARCHIVE
     URLS "https://dektec.com/products/SDK/DTAPI/Downloads/dtapi-v6.6.0-windows.zip"
     FILENAME "dtapi-6.6.0-windows.tar.gz"
-    SHA512 0
+    SHA512 3AB685BAB339AA4A925A146C4843530ED037A79F35974B2E2FD5B88F86738683557
   )
   
   # Step 2: extract archive with DTAPI
