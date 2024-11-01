@@ -1,9 +1,10 @@
 {
   "name": "dtapi",
   "version-string": "6.6.0",
-  "port-version": 1,
-  "description": "DekTec API",
+  "port-version": 2,
+  "description": "Precompiled binary package for DekTec API (DTAPI)",
   "homepage": "https://www.dektec.com",
+  "supports": "windows | linux",
   "dependencies": [
     {
       "name": "vcpkg-cmake",
@@ -13,5 +14,19 @@
       "name": "vcpkg-cmake-config",
       "host": true
     }
-  ]
+  ],
+  "features": {
+    "vc15": {
+      "description": "Install precompiled binaries for vc15 (Visual Studio 2017).",
+      "supports": "windows"
+    },
+    "vc16": {
+      "description": "Install precompiled binaries for vc16 (Visual Studio 2019).",
+      "supports": "windows"
+    },
+    "vc17": {
+      "description": "Install precompiled binaries for vc17 (Visual Studio 2022).",
+      "supports": "windows"
+    }
+  }
 }

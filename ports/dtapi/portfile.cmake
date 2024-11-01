@@ -15,6 +15,11 @@ set(LIB_NAME_DBG_SUFFIX "")
 if(VCPKG_TARGET_IS_WINDOWS)
   message(STATUS "Installing DTAPI for Windows.")
   
+  # Mutual exclusivity check for Windows-only features
+  if ("vc17" IN_LIST FEATURES AND "vc16" IN_LIST FEATURES AND "vc15" IN_LIST FEATURES)
+    message(FATAL_ERROR "Features 'vc17', 'vc16' and 'vc15' are mutually exclusive. Please specify only one.")
+  endif()
+
   # Step 1: set Windows specific names and locations for DTAPI
   
   #x86 or x64
@@ -27,15 +32,24 @@ if(VCPKG_TARGET_IS_WINDOWS)
   endif()
   
   # Which visual studio verions?
-  if (VCPKG_PLATFORM_TOOLSET STREQUAL "v143")
+  if ("vc17" IN_LIST FEATURES)
     set(LIB_SRCDIR "vc17")
-  elseif (VCPKG_PLATFORM_TOOLSET STREQUAL "v142")
+  elseif ("vc16" IN_LIST FEATURES)
     set(LIB_SRCDIR "vc16")
-  elseif (VCPKG_PLATFORM_TOOLSET STREQUAL "v141")
+  elseif ("vc15" IN_LIST FEATURES)
     set(LIB_SRCDIR "vc15")
   else()
-    # Default to VC16 version.
-    set(LIB_SRCDIR "vc16")
+    # No feature specified => auto detect based on platform toolset.
+    if (VCPKG_PLATFORM_TOOLSET STREQUAL "v143")
+      set(LIB_SRCDIR "vc17")
+    elseif (VCPKG_PLATFORM_TOOLSET STREQUAL "v142")
+      set(LIB_SRCDIR "vc16")
+    elseif (VCPKG_PLATFORM_TOOLSET STREQUAL "v141")
+      set(LIB_SRCDIR "vc15")
+    else()
+      # Default to VC16 version.
+      set(LIB_SRCDIR "vc16")
+    endif()
   endif()
   
   # Using dynamic or static runtimes?
@@ -131,7 +145,7 @@ file(INSTALL
      DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT}
     )
   
-## Install cmake files
+# Install cmake files
 file(GLOB SHARE_FILES ${SOURCE_PATH}/share/*.cmake)
 foreach(SHARE_FILE ${SHARE_FILES})
   file(INSTALL
@@ -139,3 +153,20 @@ foreach(SHARE_FILE ${SHARE_FILES})
   DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT}
   )
 endforeach()
+
+# Rename cmake target DTAPI-static when a static CRT is used
+if (VCPKG_CRT_LINKAGE STREQUAL "static")
+  file(GLOB SHARE_FILES ${CURRENT_PACKAGES_DIR}/share/${PORT}/*.cmake)
+  foreach(SHARE_FILE ${SHARE_FILES})
+    vcpkg_replace_string("${SHARE_FILE}" "DTAPI::DTAPI" "DTAPI::DTAPI-static")
+  endforeach()
+endif()
+
+# Check if one or more features are a part of a package installation.
+# See /docs/maintainers/vcpkg_check_features.md for more details
+vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
+  FEATURES # <- Keyword FEATURES is required because INVERTED_FEATURES are being used
+    tbb   WITH_TBB
+  INVERTED_FEATURES
+    tbb   ROCKSDB_IGNORE_PACKAGE_TBB
+)
