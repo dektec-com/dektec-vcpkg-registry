@@ -1,7 +1,7 @@
 {
   "name": "cdtapi",
-  "version": "1.0.0",
-  "description": "Precompiled binary package for DekTec C-API (CDTAPI)",
+  "version": "1.1.0",
+  "description": "C-wrapper library for the C++ DekTec API (aka DTAPI)",
   "homepage": "https://www.dektec.com",
   "supports": "windows",
   "dependencies": [
@@ -17,15 +17,39 @@
   "features": {
     "vc15": {
       "description": "Install precompiled binaries for vc15 (Visual Studio 2017).",
-      "supports": "windows"
+      "supports": "windows",
+      "dependencies": [
+        {
+          "name": "dtapi",
+          "features": [
+            "vc15"
+          ]
+        }
+      ]
     },
     "vc16": {
       "description": "Install precompiled binaries for vc16 (Visual Studio 2019).",
-      "supports": "windows"
+      "supports": "windows",
+      "dependencies": [
+        {
+          "name": "dtapi",
+          "features": [
+            "vc16"
+          ]
+        }
+      ]
     },
     "vc17": {
       "description": "Install precompiled binaries for vc17 (Visual Studio 2022).",
-      "supports": "windows"
+      "supports": "windows",
+      "dependencies": [
+        {
+          "name": "dtapi",
+          "features": [
+            "vc17"
+          ]
+        }
+      ]
     }
   }
 }
