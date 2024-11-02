@@ -11,11 +11,6 @@ set(LIB_NAME_CRT "")
 set(LIB_NAME_EXT "")
 set(LIB_NAME_DBG_SUFFIX "")
 
- # 'dtapi' or 'cdtapi' feature must be enabled
-  if (NOT ("dtapi" IN_LIST FEATURES OR "cdtapi" IN_LIST FEATURES))
-    message(FATAL_ERROR "Either both or one of the 'dtapi' or 'cdtapi' features must be enabled.")
-  endif()
-
 # Determine which platform is targetted
 if(VCPKG_TARGET_IS_WINDOWS)
   message(STATUS "Installing DTAPI for Windows.")
@@ -122,107 +117,49 @@ message(STATUS "Using '${LIB_SRCDIR}/${LIB_NAME}.${LIB_NAME_EXT}' as source")
 #                                                                                                            #
 ##############################################################################################################
 
-# Install - DTAPI includes - if 'dtapi 'feature is enabled
-if ("dtapi" IN_LIST FEATURES)
-  file(GLOB INCLUDE_FILES ${SOURCE_PATH}/include/DTAPI*.h)
-  foreach(INCLUDE_FILE ${INCLUDE_FILES})
-    file(INSTALL
-     "${INCLUDE_FILE}"
-     DESTINATION ${CURRENT_PACKAGES_DIR}/include/${PORT}
-    )
-  endforeach()
-endif()
-# Install - CDTAPI includes - if 'cdtapi 'feature is enabled
-if ("cdtapi" IN_LIST FEATURES)
-  file(GLOB INCLUDE_FILES ${SOURCE_PATH}/include/CDTAPI*.h)
-  foreach(INCLUDE_FILE ${INCLUDE_FILES})
-    file(INSTALL
-     "${INCLUDE_FILE}"
-     DESTINATION ${CURRENT_PACKAGES_DIR}/include/c${PORT}
-    )
-  endforeach()
-endif()
+# Install - DTAPI includes
+file(GLOB INCLUDE_FILES ${SOURCE_PATH}/include/DTAPI*.h)
+foreach(INCLUDE_FILE ${INCLUDE_FILES})
+  file(INSTALL
+   "${INCLUDE_FILE}"
+   DESTINATION ${CURRENT_PACKAGES_DIR}/include/${PORT}
+  )
+endforeach()
 
-# Install - DTAPI debug library - if 'dtapi 'feature is enabled
-if ("dtapi" IN_LIST FEATURES)
-  file(INSTALL
-       "${SOURCE_PATH}/lib/${LIB_SRCDIR}/${LIB_NAME}${LIB_NAME_DBG_SUFFIX}.${LIB_NAME_EXT}"
-       DESTINATION ${CURRENT_PACKAGES_DIR}/debug/lib
-       RENAME "${LIB_NAME_BASE}.${LIB_NAME_EXT}"
-      )
-endif()
-# Install - CDTAPI debug library - if 'cdtapi 'feature is enabled
-if ("cdtapi" IN_LIST FEATURES)
-  file(INSTALL
-     "${SOURCE_PATH}/lib/${LIB_SRCDIR}/C${LIB_NAME}${LIB_NAME_DBG_SUFFIX}.${LIB_NAME_EXT}"
+# Install - DTAPI debug library
+file(INSTALL
+     "${SOURCE_PATH}/lib/${LIB_SRCDIR}/${LIB_NAME}${LIB_NAME_DBG_SUFFIX}.${LIB_NAME_EXT}"
      DESTINATION ${CURRENT_PACKAGES_DIR}/debug/lib
-     RENAME "C${LIB_NAME_BASE}.${LIB_NAME_EXT}"
+     RENAME "${LIB_NAME_BASE}.${LIB_NAME_EXT}"
     )
-endif()
-# Install - DTAPI release library - if 'dtapi 'feature is enabled
-if ("dtapi" IN_LIST FEATURES)
-  file(INSTALL
-       "${SOURCE_PATH}/lib/${LIB_SRCDIR}/${LIB_NAME}.${LIB_NAME_EXT}"
-         DESTINATION ${CURRENT_PACKAGES_DIR}/lib
-       RENAME "${LIB_NAME_BASE}.${LIB_NAME_EXT}"
-      )
-endif()
-# Install - CDTAPI release library - if 'cdtapi 'feature is enabled
-if ("cdtapi" IN_LIST FEATURES)
-  file(INSTALL
-     "${SOURCE_PATH}/lib/${LIB_SRCDIR}/C${LIB_NAME}.${LIB_NAME_EXT}"
-     DESTINATION ${CURRENT_PACKAGES_DIR}/lib
-     RENAME "C${LIB_NAME_BASE}.${LIB_NAME_EXT}"
-    )
-endif()
 
-# Install - DTAPI copyright file - if 'dtapi 'feature is enabled
-if ("dtapi" IN_LIST FEATURES)
-  file(INSTALL
-     "${SOURCE_PATH}/share/copyright"
-     DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT}
+# Install - DTAPI release library
+file(INSTALL
+     "${SOURCE_PATH}/lib/${LIB_SRCDIR}/${LIB_NAME}.${LIB_NAME_EXT}"
+       DESTINATION ${CURRENT_PACKAGES_DIR}/lib
+     RENAME "${LIB_NAME_BASE}.${LIB_NAME_EXT}"
     )
-else()
-  # disable copyright warning, when we are not installing the DTAPI itself
-  set(VCPKG_POLICY_SKIP_COPYRIGHT_CHECK enabled)
-endif()
-# Install - DTAPI copyright file - if 'cdtapi 'feature is enabled
-if ("cdtapi" IN_LIST FEATURES)
-  file(INSTALL
-     "${SOURCE_PATH}/share/cdtapi/copyright"
-     DESTINATION ${CURRENT_PACKAGES_DIR}/share/c${PORT}
-    )
-endif()
+# Install - DTAPI copyright file
+file(INSTALL
+   "${SOURCE_PATH}/share/copyright"
+   DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT}
+  )
 
-# Install - DTAPI cmake files library - if 'dtapi 'feature is enabled
-if ("dtapi" IN_LIST FEATURES)
-  file(GLOB SHARE_FILES ${SOURCE_PATH}/share/*.cmake)
-  foreach(SHARE_FILE ${SHARE_FILES})
-    file(INSTALL
-    "${SHARE_FILE}"
-    DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT}
-    )
-  endforeach()
-endif()
-# Install - CDTAPI cmake files library - if 'cdtapi 'feature is enabled
-if ("cdtapi" IN_LIST FEATURES)
-  file(GLOB SHARE_FILES ${SOURCE_PATH}/share/cdtapi/*.cmake)
-  foreach(SHARE_FILE ${SHARE_FILES})
-    file(INSTALL
-    "${SHARE_FILE}"
-    DESTINATION ${CURRENT_PACKAGES_DIR}/share/c${PORT}
-    )
-  endforeach()
-endif()
+# Install - DTAPI cmake files library
+file(GLOB SHARE_FILES ${SOURCE_PATH}/share/*.cmake)
+foreach(SHARE_FILE ${SHARE_FILES})
+  file(INSTALL
+  "${SHARE_FILE}"
+  DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT}
+  )
+endforeach()
 
 # Rename cmake target DTAPI-static when a static CRT is used
-if ("dtapi" IN_LIST FEATURES)
-  if (VCPKG_CRT_LINKAGE STREQUAL "static")
-    file(GLOB SHARE_FILES ${CURRENT_PACKAGES_DIR}/share/${PORT}/*.cmake)
-    foreach(SHARE_FILE ${SHARE_FILES})
-      vcpkg_replace_string("${SHARE_FILE}" "DTAPI::DTAPI" "DTAPI::DTAPI-static")
-    endforeach()
-  endif()
+if (VCPKG_CRT_LINKAGE STREQUAL "static")
+  file(GLOB SHARE_FILES ${CURRENT_PACKAGES_DIR}/share/${PORT}/*.cmake)
+  foreach(SHARE_FILE ${SHARE_FILES})
+    vcpkg_replace_string("${SHARE_FILE}" "DTAPI::DTAPI" "DTAPI::DTAPI-static")
+  endforeach()
 endif()
 
 # Check if one or more features are a part of a package installation.

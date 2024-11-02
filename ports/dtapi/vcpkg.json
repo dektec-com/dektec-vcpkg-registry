@@ -15,18 +15,7 @@
       "host": true
     }
   ],
-  "default-features": [
-    "dtapi"
-  ],
   "features": {
-    "cdtapi": {
-      "description": "Install precompiled binaries for C version of DekTec API (aka CDTAPI).",
-      "supports": "windows"
-    },
-    "dtapi": {
-      "description": "Install precompiled binaries for C++ version of DekTec API (aka DTAPI).",
-      "supports": "windows | linux"
-    },
     "vc15": {
       "description": "Install precompiled binaries for vc15 (Visual Studio 2017).",
       "supports": "windows"
