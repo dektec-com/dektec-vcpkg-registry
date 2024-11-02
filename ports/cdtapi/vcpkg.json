@@ -1,7 +1,6 @@
 {
   "name": "cdtapi",
   "version": "1.0.0",
-  "port-version": 0,
   "description": "Precompiled binary package for DekTec C-API (CDTAPI)",
   "homepage": "https://www.dektec.com",
   "supports": "windows",
