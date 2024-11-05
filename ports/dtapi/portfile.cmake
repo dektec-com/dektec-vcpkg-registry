@@ -9,9 +9,6 @@
 ## Warn that only static linking is supported.
 vcpkg_check_linkage(ONLY_STATIC_LIBRARY )
 
-## DTAPI version used by this port file.
-set(DTAPI_VERSION 6.6.0)
-
 ## Init variabale for name of library source file to safe initial values.
 set(LIB_NAME_BASE "DTAPI")
 set(LIB_NAME_ARCH "")
@@ -26,7 +23,7 @@ set(LIB_NAME_DBG_SUFFIX "")
 ## Determine which platform is targeted?
 if(VCPKG_TARGET_IS_WINDOWS)
 
-  message(STATUS "Installing DTAPI for Windows.")
+  message(STATUS "Installing DTAPI v${VERSION} for Windows.")
   
   ## Mutual exclusivity check for Windows-only features
   if ("vc17" IN_LIST FEATURES AND "vc16" IN_LIST FEATURES AND "vc15" IN_LIST FEATURES)
@@ -78,14 +75,14 @@ if(VCPKG_TARGET_IS_WINDOWS)
   ## Step 2: Download zip with Windows binaries.
   vcpkg_download_distfile(
     ARCHIVE
-    URLS "https://dektec.com/products/SDK/DTAPI/Downloads/dtapi-v${DTAPI_VERSION}-windows.zip"
-    FILENAME "dtapi-v${DTAPI_VERSION}-windows.tar.gz"
+    URLS "https://dektec.com/products/SDK/DTAPI/Downloads/dtapi-v${VERSION}-windows.zip"
+    FILENAME "dtapi-v${VERSION}-windows.tar.gz"
     SHA512 3EAB7649AB82C6814B3A6654B32975E13353B2A424273A508A9CEB4CDA40DD35FE9D9A0FCAB0DE4E879A5C67380D1BABD62E355B3EC6EAE9836D4FB5C2BF6C58
   )
 
 elseif(VCPKG_TARGET_IS_LINUX)
 
-  message(STATUS "Installing DTAPI for Linux.")
+  message(STATUS "Installing DTAPI v${VERSION} for Linux.")
   
   ## Step 1: set Linux specific names and locations for DTAPI.
   
@@ -107,8 +104,8 @@ elseif(VCPKG_TARGET_IS_LINUX)
   ## Step 2: Download zip with Linux binaries.
   vcpkg_download_distfile(
     ARCHIVE
-    URLS "https://dektec.com/products/SDK/DTAPI/Downloads/dtapi-v${DTAPI_VERSION}-linux.tar.gz"
-    FILENAME "dtapi-v${DTAPI_VERSION}-linux.tar.gz"
+    URLS "https://dektec.com/products/SDK/DTAPI/Downloads/dtapi-v${VERSION}-linux.tar.gz"
+    FILENAME "dtapi-v${VERSION}-linux.tar.gz"
     SHA512 4CC807B8295FD92C094B78DB3F0D234CE76825097A920CF1FA6E07151BC9108E28DBD1EF1EAB3F836EBBFF1BCCBBC18611E84A2892D87EA5AEB662C0E0383BAF
   )
   

@@ -9,13 +9,10 @@
 ## Warn that only static linking is supported.
 vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 
-## CDTAPI version installed by this port file.
-set(CDTAPI_VERSION 1.1.0)
-
 ## Determine which platform is targeted.
 if(VCPKG_TARGET_IS_WINDOWS)
 
-  message(STATUS "Installing CDTAPI for Windows.")
+  message(STATUS "Installing CDTAPI v${VERSION} for Windows.")
   
   ## Mutual exclusivity check for Windows-only features.
   if ("vc17" IN_LIST FEATURES AND "vc16" IN_LIST FEATURES AND "vc15" IN_LIST FEATURES)
@@ -23,7 +20,7 @@ if(VCPKG_TARGET_IS_WINDOWS)
   endif()
 
 elseif(VCPKG_TARGET_IS_LINUX)
-  message(STATUS "Installing CDTAPI for Linux.")
+  message(STATUS "Installing CDTAPI v${VERSION} for Linux.")
 else()
   message(FATAL_ERROR "Only the Windows and Linux platforms are supported.")
 endif()
@@ -36,7 +33,7 @@ endif()
 vcpkg_from_github(
   OUT_SOURCE_PATH SOURCE_PATH
   REPO dektec-projects/cdtapi
-  REF "v${CDTAPI_VERSION}"
+  REF "v${VERSION}"
   SHA512 2cadbf73c80990f36018805ad76c7b7fbdb506958d13f96f26e6fcef8717e789f2ac70be769676e3562d17115d45b32835bba84e302f26f25f872dddce200e65)
 
 ## Step 2: Configure cmake. Enable the 'VCPKG_BUILD' option, so that the package knowns it is about to be 
