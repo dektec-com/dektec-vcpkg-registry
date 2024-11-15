@@ -3,8 +3,13 @@
   "version": "1.1.0",
   "description": "C-wrapper library for the C++ DekTec API (aka DTAPI)",
   "homepage": "https://www.dektec.com",
-  "supports": "windows",
+  "supports": "windows | linux",
   "dependencies": [
+    {
+      "name": "dtapi",
+      "platform": "linux",
+      "version>=": "6.6.0"
+    },
     {
       "name": "vcpkg-cmake",
       "host": true
@@ -13,6 +18,9 @@
       "name": "vcpkg-cmake-config",
       "host": true
     }
+  ],
+  "default-features": [
+    "vc15"
   ],
   "features": {
     "vc15": {
@@ -23,7 +31,8 @@
           "name": "dtapi",
           "features": [
             "vc15"
-          ]
+          ],
+          "version>=": "6.6.0"
         }
       ]
     },
@@ -35,7 +44,8 @@
           "name": "dtapi",
           "features": [
             "vc16"
-          ]
+          ],
+          "version>=": "6.6.0"
         }
       ]
     },
@@ -47,7 +57,8 @@
           "name": "dtapi",
           "features": [
             "vc17"
-          ]
+          ],
+          "version>=": "6.6.0"
         }
       ]
     }
