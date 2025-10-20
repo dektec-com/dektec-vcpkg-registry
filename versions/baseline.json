@@ -5,7 +5,7 @@
       "port-version": 0
     },
     "dtapi": {
-      "baseline": "6.7.0",
+      "baseline": "6.10.0",
       "port-version": 0
     }
   }
