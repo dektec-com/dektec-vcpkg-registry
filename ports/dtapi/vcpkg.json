@@ -1,6 +1,6 @@
 {
   "name": "dtapi",
-  "version": "6.11.0",
+  "version": "6.12.0",
   "description": "Precompiled binary package for DekTec API (DTAPI)",
   "homepage": "https://www.dektec.com",
   "supports": "windows | linux",
