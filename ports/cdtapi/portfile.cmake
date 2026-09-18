@@ -1,6 +1,6 @@
 ## *#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#* portfile.cmake *#*#*#*#*#*#*#*#*#*#*#*#*#*#*# (C) 2026 DekTec
 ##
-## vcpkg port file for DekTec's CDTAPI, a native C API for DekTec SDI and SMPTE ST 2110 interfaces.
+## vcpkg port file for DekTec's CDTAPI, a native C API for DekTec SDI, DVB-ASI and SMPTE ST 2110 interfaces.
 ##
 ## CDTAPI is BSD-3-Clause C11 that talks to the DtPcie driver itself, so this port builds it from source
 ## like any other port. The wrapper this replaces shipped built archives, because it linked closed DTAPI.
@@ -13,7 +13,7 @@ vcpkg_from_github(
   OUT_SOURCE_PATH SOURCE_PATH
   REPO dektec-com/cdtapi
   REF "v${VERSION}"
-  SHA512 5240816cd42956da930e76caf70e6c6fb53cf5d25ce859fb002f886954542ea53a584fd21ea44a7cb2728beec487694203c779fcaf4cf2baea721fcbbd4de156)
+  SHA512 6ac696f64d6dc4bce30ca5ad294990ac7224b9c05700477932d4387709c8f949a5f2134f601d65477b0acb3782e0815e4b4ac94540dd167919b55afad344dbdf)
 
 ## +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+ Build +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 ## +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+

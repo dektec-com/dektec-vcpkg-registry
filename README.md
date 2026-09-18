@@ -5,7 +5,7 @@ ports of DekTec's libraries, for a project that manages its dependencies with vc
 
 | Port | What it is |
 |---|---|
-| `cdtapi` | The C API for DekTec SDI and SMPTE ST 2110 interfaces. BSD-3-Clause, built from source. |
+| `cdtapi` | The C API for DekTec SDI, DVB-ASI and SMPTE ST 2110 interfaces. BSD-3-Clause, built from source. |
 | `dtapi` | The C++ API for DekTec devices, as precompiled binaries. |
 
 ## Using it
