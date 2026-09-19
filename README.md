@@ -7,6 +7,7 @@ ports of DekTec's libraries, for a project that manages its dependencies with vc
 |---|---|
 | `cdtapi` | The C API for DekTec SDI, DVB-ASI and SMPTE ST 2110 interfaces. BSD-3-Clause, built from source. |
 | `dtapi` | The C++ API for DekTec devices, as precompiled binaries. |
+| `ffmpeg-dektec` | FFmpeg with DekTec's devices and the `sdi` format, on `cdtapi`. LGPL, built from source. |
 
 ## Using it
 
@@ -24,7 +25,7 @@ Name this registry in `vcpkg-configuration.json`, beside your manifest:
       "kind": "git",
       "repository": "https://github.com/dektec-com/dektec-vcpkg-registry",
       "baseline": "<a commit of this repository>",
-      "packages": [ "cdtapi", "dtapi" ]
+      "packages": [ "cdtapi", "dtapi", "ffmpeg-dektec" ]
     }
   ]
 }
@@ -45,7 +46,7 @@ build resolves; `git ls-remote https://github.com/dektec-com/dektec-vcpkg-regist
 gives the newest of this one. Naming a commit rather than a branch is what makes a build
 reproducible.
 
-Both ports provide a CMake package:
+`cdtapi` and `dtapi` provide a CMake package:
 
 ```cmake
 find_package(cdtapi CONFIG REQUIRED)
@@ -63,6 +64,14 @@ installed. Supported triplets are the x64 ones of Windows and Linux.
 **`dtapi`** installs precompiled binaries. On Windows the features `vc15`, `vc16` and
 `vc17` choose which Visual Studio version's binaries are installed; pick one. They are
 mutually exclusive, and without a feature the port follows the platform toolset.
+
+**`ffmpeg-dektec`** is vcpkg's own `ffmpeg` port with DekTec's fork of FFmpeg as its
+source, [github.com/dektec-com/ffmpeg-dektec](https://github.com/dektec-com/ffmpeg-dektec),
+built with `--enable-libcdtapi`: the `dektec` input and output device and the `sdi`
+format come with FFmpeg's libraries, and its features are those of the `ffmpeg` port.
+It installs the same libraries and headers as that port and cannot be installed beside
+it. The fork's repository is private for now: vcpkg fetches it over SSH, so the port
+installs only for someone whose `git` can reach `git@github.com:dektec-com/ffmpeg-dektec`.
 
 ## Keeping it up to date (DekTec)
 
