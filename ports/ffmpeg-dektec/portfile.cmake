@@ -2,11 +2,10 @@
 vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
     URL git@github.com:dektec-com/ffmpeg-dektec.git
-    REF 61f68623e5093cdcab026d455a5d96c0cd7e5745
+    REF 3ce4279ead3360fab56ff1c4be1a91499085051e
     FETCH_REF dektec
     HEAD_REF dektec
     PATCHES
-        0002-fix-msvc-link.patch
         0003-fix-windowsinclude.patch
         0004-dependencies.patch
         0005-fix-nasm.patch
@@ -17,6 +16,10 @@ vcpkg_from_git(
         0045-use-prebuilt-bin2c.patch
         0046-fix-msvc-detection.patch
         0047-fix-msvc-utf8.patch
+        0049-fix-twolame-pkgconfig.patch
+        0050-fix-test-ld-absolute-lib-paths.patch
+        0051-fix-msvc-undef-flags.patch
+        0052-fix-disable-unstable-swscale-link.patch
 )
 
 if(SOURCE_PATH MATCHES " ")
@@ -56,6 +59,12 @@ elseif(VCPKG_CMAKE_SYSTEM_NAME STREQUAL "Android")
     string(APPEND OPTIONS " --target-os=android --enable-jni --enable-mediacodec")
 elseif(VCPKG_CMAKE_SYSTEM_NAME STREQUAL "QNX")
     string(APPEND OPTIONS " --target-os=qnx")
+elseif(VCPKG_TARGET_IS_OHOS)
+    # OHOS kernel is Linux/musl; ffmpeg configure has no "ohos" target-os,
+    # so without this it falls back to the host (e.g. darwin) and injects
+    # host-specific LDFLAGS (-Wl,-dynamic,-search_paths_first) that lld rejects,
+    # which also corrupts the memalign/posix_memalign link probes.
+    string(APPEND OPTIONS " --target-os=linux --enable-pthreads")
 endif()
 
 if(VCPKG_TARGET_IS_OSX)
@@ -86,6 +95,19 @@ if(VCPKG_DETECTED_CMAKE_C_COMPILER)
     get_filename_component(CC_filename "${VCPKG_DETECTED_CMAKE_C_COMPILER}" NAME)
     set(ENV{CC} "${CC_filename}")
     string(APPEND OPTIONS " --cc=${CC_filename}")
+
+    # FFmpeg 9.0 builds a native helper for the unstable AArch64 swscale
+    # backend. Using the target cl.exe as HOSTCC produces an ARM64 executable
+    # that cannot run on the x64 build host. Disable only that unstable backend
+    # for Windows ARM64; 0052 keeps the legacy swscale path linkable.
+    if(VCPKG_HOST_IS_WINDOWS AND VCPKG_DETECTED_MSVC)
+        if(VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64")
+            string(APPEND OPTIONS " --disable-unstable")
+        else()
+            string(APPEND OPTIONS " --host-cc=${CC_filename}")
+        endif()
+    endif()
+
     list(APPEND prog_env "${CC_path}")
 endif()
 
@@ -105,7 +127,11 @@ if(VCPKG_DETECTED_CMAKE_RC_COMPILER)
     list(APPEND prog_env "${RC_path}")
 endif()
 
-if(VCPKG_DETECTED_CMAKE_LINKER AND VCPKG_TARGET_IS_WINDOWS AND NOT VCPKG_TARGET_IS_MINGW)
+# A GNU-frontend clang links through the compiler driver (the detected
+# CMAKE_LINKER flags are driver-style, not lld-link-style), so leave
+# configure's default LD=CC in place there.
+if(VCPKG_DETECTED_CMAKE_LINKER AND VCPKG_TARGET_IS_WINDOWS AND NOT VCPKG_TARGET_IS_MINGW
+   AND NOT VCPKG_DETECTED_CMAKE_C_COMPILER MATCHES "clang(-[0-9]+)?(\\.exe)?$")
     get_filename_component(LD_path "${VCPKG_DETECTED_CMAKE_LINKER}" DIRECTORY)
     get_filename_component(LD_filename "${VCPKG_DETECTED_CMAKE_LINKER}" NAME)
     set(ENV{LD} "${LD_filename}")
@@ -306,6 +332,14 @@ else()
     set(WITH_DAV1D OFF)
 endif()
 
+if("svt-av1" IN_LIST FEATURES)
+    set(OPTIONS "${OPTIONS} --enable-libsvtav1")
+    set(WITH_SVTAV1 ON)
+else()
+    set(OPTIONS "${OPTIONS} --disable-libsvtav1")
+    set(WITH_SVTAV1 OFF)
+endif()
+
 if("fdk-aac" IN_LIST FEATURES)
     set(OPTIONS "${OPTIONS} --enable-libfdk-aac")
     set(WITH_AAC ON)
@@ -482,11 +516,7 @@ else()
     set(WITH_SSH OFF)
 endif()
 
-if("tensorflow" IN_LIST FEATURES)
-    set(OPTIONS "${OPTIONS} --enable-libtensorflow")
-else()
-    set(OPTIONS "${OPTIONS} --disable-libtensorflow")
-endif()
+set(OPTIONS "${OPTIONS} --disable-libtensorflow")
 
 if("tesseract" IN_LIST FEATURES)
     set(OPTIONS "${OPTIONS} --enable-libtesseract")
@@ -500,6 +530,14 @@ if("theora" IN_LIST FEATURES)
 else()
     set(OPTIONS "${OPTIONS} --disable-libtheora")
     set(WITH_THEORA OFF)
+endif()
+
+if("twolame" IN_LIST FEATURES)
+    set(OPTIONS "${OPTIONS} --enable-libtwolame")
+    set(WITH_TWOLAME ON)
+else()
+    set(OPTIONS "${OPTIONS} --disable-libtwolame")
+    set(WITH_TWOLAME OFF)
 endif()
 
 if("vorbis" IN_LIST FEATURES)
@@ -571,11 +609,11 @@ else()
 endif()
 
 if ("qsv" IN_LIST FEATURES)
-    set(OPTIONS "${OPTIONS} --enable-libmfx --enable-encoder=h264_qsv --enable-decoder=h264_qsv")
-    set(WITH_MFX ON)
+    set(OPTIONS "${OPTIONS} --enable-libvpl --enable-encoder=h264_qsv --enable-decoder=h264_qsv")
+    set(WITH_VPL ON)
 else()
-    set(OPTIONS "${OPTIONS} --disable-libmfx")
-    set(WITH_MFX OFF)
+    set(OPTIONS "${OPTIONS} --disable-libvpl")
+    set(WITH_VPL OFF)
 endif()
 
 if ("vaapi" IN_LIST FEATURES)
@@ -628,6 +666,7 @@ endif()
 if(VCPKG_TARGET_IS_UWP)
     set(ENV{LIBPATH} "$ENV{LIBPATH};$ENV{_WKITS10}references\\windows.foundation.foundationcontract\\2.0.0.0\\;$ENV{_WKITS10}references\\windows.foundation.universalapicontract\\3.0.0.0\\")
     string(APPEND OPTIONS " --disable-programs")
+    string(APPEND OPTIONS " --disable-filter=gfxcapture")
     string(APPEND OPTIONS " --extra-cflags=-DWINAPI_FAMILY=WINAPI_FAMILY_APP --extra-cflags=-D_WIN32_WINNT=0x0A00")
     string(APPEND OPTIONS " --extra-ldflags=-APPCONTAINER --extra-ldflags=WindowsApp.lib --extra-ldflags=dxguid.lib")
 endif()
@@ -840,15 +879,33 @@ if(VCPKG_TARGET_IS_WINDOWS)
             message(FATAL_ERROR "Unsupported target architecture")
         endif()
 
+        # llvm-lib implements the lib.exe interface; use it when building on
+        # a host without the MSVC tools
+        if(CMAKE_HOST_WIN32)
+            set(LIB_TOOL lib.exe)
+        else()
+            find_program(LIB_TOOL NAMES llvm-lib llvm-lib-22 llvm-lib-19 REQUIRED)
+        endif()
         foreach(DEF_FILE ${DEF_FILES})
             get_filename_component(DEF_FILE_DIR "${DEF_FILE}" DIRECTORY)
             get_filename_component(DEF_FILE_NAME "${DEF_FILE}" NAME)
             string(REGEX REPLACE "-[0-9]*\\.def" "${VCPKG_TARGET_STATIC_LIBRARY_SUFFIX}" OUT_FILE_NAME "${DEF_FILE_NAME}")
+            if(NOT CMAKE_HOST_WIN32)
+                # ffmpeg's makedef emits no LIBRARY statement; lib.exe infers the
+                # DLL name from the def filename but llvm-lib leaves it EMPTY,
+                # producing import entries no Windows loader can resolve.
+                get_filename_component(DEF_BASE_NAME "${DEF_FILE}" NAME_WE)
+                file(READ "${DEF_FILE}" DEF_CONTENTS)
+                if(NOT DEF_CONTENTS MATCHES "LIBRARY")
+                    file(WRITE "${CURRENT_BUILDTREES_DIR}/${DEF_FILE_NAME}" "LIBRARY ${DEF_BASE_NAME}\n${DEF_CONTENTS}")
+                    set(DEF_FILE "${CURRENT_BUILDTREES_DIR}/${DEF_FILE_NAME}")
+                endif()
+            endif()
             file(TO_NATIVE_PATH "${DEF_FILE}" DEF_FILE_NATIVE)
             file(TO_NATIVE_PATH "${DEF_FILE_DIR}/${OUT_FILE_NAME}" OUT_FILE_NATIVE)
             message(STATUS "Generating ${OUT_FILE_NATIVE}")
             vcpkg_execute_required_process(
-                COMMAND lib.exe "/def:${DEF_FILE_NATIVE}" "/out:${OUT_FILE_NATIVE}" ${LIB_MACHINE_ARG}
+                COMMAND "${LIB_TOOL}" "/def:${DEF_FILE_NATIVE}" "/out:${OUT_FILE_NATIVE}" ${LIB_MACHINE_ARG}
                 WORKING_DIRECTORY "${CURRENT_PACKAGES_DIR}"
                 LOGNAME "libconvert-${TARGET_TRIPLET}"
             )
@@ -1044,4 +1101,8 @@ you may need to add the following link option for your library:
 ")
 endif()
 
-vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/${LICENSE_FILE}")
+vcpkg_install_copyright(
+    FILE_LIST
+        "${SOURCE_PATH}/${LICENSE_FILE}"
+        "${SOURCE_PATH}/LICENSE.md"
+)

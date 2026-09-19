@@ -1,6 +1,6 @@
 {
   "name": "ffmpeg-dektec",
-  "version": "8.1.2",
+  "version": "9.0.2",
   "description": [
     "FFmpeg with DekTec's SDI, DVB-ASI and SMPTE ST 2110 devices on CDTAPI.",
     "DekTec's fork of FFmpeg, with the dektec input and output device and the sdi format, built with --enable-libcdtapi. It installs FFmpeg's libraries and headers, as the ffmpeg port does, and cannot be installed beside it."
@@ -65,6 +65,7 @@
             "swresample",
             "swscale",
             "theora",
+            "twolame",
             "vorbis",
             "vpx",
             "vulkan",
@@ -165,17 +166,17 @@
           "name": "ffmpeg-dektec",
           "default-features": false,
           "features": [
-            "opengl"
+            "svt-av1"
           ],
-          "platform": "!uwp & !(arm64 & windows)"
+          "platform": "!x86 & !arm32 & !uwp"
         },
         {
           "name": "ffmpeg-dektec",
           "default-features": false,
           "features": [
-            "tensorflow"
+            "opengl"
           ],
-          "platform": "x64 & !static & !uwp & !windows"
+          "platform": "!uwp & !(arm64 & windows)"
         },
         {
           "name": "ffmpeg-dektec",
@@ -199,7 +200,7 @@
           "features": [
             "qsv"
           ],
-          "platform": "linux | (!osx & !uwp & !(arm & windows))"
+          "platform": "(x64 | x86) & (windows | linux) & !uwp"
         },
         {
           "name": "ffmpeg-dektec",
@@ -284,7 +285,11 @@
     "ass": {
       "description": "Libass subtitles rendering, needed for subtitles and ass filter support in ffmpeg",
       "dependencies": [
-        "libass"
+        "libass",
+        {
+          "name": "libiconv",
+          "platform": "windows & static"
+        }
       ]
     },
     "avcodec": {
@@ -554,9 +559,9 @@
       ]
     },
     "qsv": {
-      "description": "Intel QSV Codec",
+      "description": "Intel QSV Codec via oneVPL",
       "dependencies": [
-        "mfx-dispatch"
+        "libvpl"
       ]
     },
     "rubberband": {
@@ -627,18 +632,18 @@
         "libssh"
       ]
     },
+    "svt-av1": {
+      "description": "AV1 encoding via libSvtAv1Enc",
+      "supports": "!x86 & !arm32 & !uwp",
+      "dependencies": [
+        "svt-av1"
+      ]
+    },
     "swresample": {
       "description": "Build the swresample library"
     },
     "swscale": {
       "description": "Build the swscale library"
-    },
-    "tensorflow": {
-      "description": "TensorFlow as a DNN module backend for DNN based filters like sr",
-      "supports": "!static",
-      "dependencies": [
-        "tensorflow"
-      ]
     },
     "tesseract": {
       "description": "Tesseract, needed for ocr filter",
@@ -651,6 +656,12 @@
       "description": "Theora encoding via libtheora",
       "dependencies": [
         "libtheora"
+      ]
+    },
+    "twolame": {
+      "description": "MP2 encoding via libtwolame",
+      "dependencies": [
+        "libtwolame"
       ]
     },
     "vaapi": {
