@@ -9,7 +9,7 @@
       "port-version": 0
     },
     "ffmpeg-dektec": {
-      "baseline": "8.1.2",
+      "baseline": "9.0.2",
       "port-version": 0
     }
   }
