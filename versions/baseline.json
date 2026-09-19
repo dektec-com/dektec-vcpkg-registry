@@ -7,6 +7,10 @@
     "dtapi": {
       "baseline": "6.13.0",
       "port-version": 0
+    },
+    "ffmpeg-dektec": {
+      "baseline": "8.1.2",
+      "port-version": 0
     }
   }
 }
