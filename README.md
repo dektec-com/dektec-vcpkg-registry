@@ -75,8 +75,19 @@ installs only for someone whose `git` can reach `git@github.com:dektec-com/ffmpe
 
 ## Keeping it up to date (DekTec)
 
-A new version of a port is added in two commits, because `x-add-version` reads the port
-from the repository's history:
+`publish.sh` publishes a new version of a port:
+
+    ./publish.sh cdtapi 6.13.4 "what changed"
+    ./publish.sh ffmpeg-dektec 9.0.2 "what changed" --tag n9.0.2-dektec2
+    ./publish.sh dtapi 6.13.1 "what changed"
+
+It works out how the portfile fetches its source and follows it: for
+`vcpkg_from_github` it downloads the tarball of the tag and writes its SHA-512 down, for
+`vcpkg_from_git` it asks the remote what the tag stands for and writes that commit,
+counting the port version up since the same software is built the same way, and for
+`vcpkg_download_distfile` it hashes every URL of the new version. Then it writes the
+version into the manifest and makes the two commits a new version takes, because
+`x-add-version` reads the port from the repository's history:
 
     vcpkg format-manifest ports/<port>/vcpkg.json
     git add --all && git commit -m "<port> <version>: what changed"
@@ -84,16 +95,13 @@ from the repository's history:
     vcpkg x-add-version <port> --overlay-ports=./ports \
         --x-builtin-registry-versions-dir=./versions/ --x-builtin-ports-root=./ports
     git add --all && git commit -m "The registry's baseline for <port> is <version>"
-    git push
 
-`update.bat <port> <message>` does the same in one go and pushes.
-
-Before committing, build the port from a working copy and use it, on every platform it
-supports:
+It does not push. Read the two commits, and build the port from the working copy and use
+it, on every platform it supports:
 
     vcpkg install <port>:x64-windows --overlay-ports=./ports
+    vcpkg install <port>:x64-linux --overlay-ports=./ports
 
-`vcpkg_from_github` wants the SHA512 of the release's tarball. Put `SHA512 0` in the
-portfile and run the install once: the download fails and says which hash to write down.
-The tag has to exist on GitHub before that hash means anything, and a tag that moves
-afterwards invalidates it.
+The tag has to exist on GitHub before its hash means anything, and a tag that moves
+afterwards invalidates it. For `cdtapi` the tag's own Release names the hash as well,
+which is the same number `publish.sh` computes.
