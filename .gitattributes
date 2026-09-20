@@ -1,0 +1,6 @@
+# Normalize line endings; let git detect text versus binary automatically.
+* text=auto
+
+# Shell scripts must stay LF: a CRLF script fails with a confusing 'bad interpreter'
+# error, and publish.sh is written and run on Windows as well as Linux.
+*.sh        text eol=lf

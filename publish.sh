@@ -20,7 +20,9 @@
 #                           the port version counts up, since the source is the same
 #                           software built the same way
 #   vcpkg_download_distfile downloads every URL of the new version and writes each
-#                           SHA-512 back in the order they appear
+#                           SHA-512 back in the order they appear. The dtapi port fetches
+#                           its archives from dektec.com, where they are put by hand, so
+#                           the new version has to be on the website before this runs
 #
 # Then it formats the manifest, commits the port, runs x-add-version for the versions
 # database and the baseline, and commits that. It does not push: look at the two commits
@@ -69,7 +71,12 @@ HashOf()
     local Url="$1"
     local Temp
     Temp="$(mktemp)"
-    curl -sSLf "$Url" -o "$Temp"
+    if ! curl -sSLf "$Url" -o "$Temp"; then
+        rm -f "$Temp"
+        echo "Cannot download $Url" >&2
+        echo "The version has to be published there before its hash means anything." >&2
+        exit 1
+    fi
     sha512sum "$Temp" | cut -d' ' -f1
     rm -f "$Temp"
 }

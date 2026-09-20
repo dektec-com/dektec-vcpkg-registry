@@ -102,6 +102,9 @@ it, on every platform it supports:
     vcpkg install <port>:x64-windows --overlay-ports=./ports
     vcpkg install <port>:x64-linux --overlay-ports=./ports
 
-The tag has to exist on GitHub before its hash means anything, and a tag that moves
-afterwards invalidates it. For `cdtapi` the tag's own Release names the hash as well,
-which is the same number `publish.sh` computes.
+The source has to be published before its hash means anything: for `cdtapi` and
+`ffmpeg-dektec` that is the tag on GitHub, and a tag that moves afterwards invalidates
+the hash; for `dtapi` it is the archive of binaries on dektec.com, which is put there by
+hand, so a new DTAPI goes onto the website first and into the registry after. The
+`cdtapi` tag's own Release names the hash as well, which is the same number `publish.sh`
+computes.
