@@ -1,7 +1,7 @@
 {
   "name": "ffmpeg-dektec",
   "version": "9.0.2",
-  "port-version": 1,
+  "port-version": 2,
   "description": [
     "FFmpeg with DekTec's SDI, DVB-ASI and SMPTE ST 2110 devices on CDTAPI.",
     "DekTec's fork of FFmpeg, with the dektec input and output device and the sdi format, built with --enable-libcdtapi. It installs FFmpeg's libraries and headers, as the ffmpeg port does, and cannot be installed beside it."
@@ -10,7 +10,10 @@
   "license": null,
   "supports": "x64 & (windows | linux)",
   "dependencies": [
-    "cdtapi",
+    {
+      "name": "cdtapi",
+      "version>=": "6.13.3"
+    },
     {
       "name": "ffmpeg-bin2c",
       "host": true
