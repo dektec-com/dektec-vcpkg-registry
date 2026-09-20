@@ -1,6 +1,6 @@
 {
   "name": "cdtapi",
-  "version": "6.13.3",
+  "version": "6.13.4",
   "description": "Native open-source C API for DekTec SDI, DVB-ASI and SMPTE ST 2110 interfaces",
   "homepage": "https://github.com/dektec-com/cdtapi",
   "license": "BSD-3-Clause",
