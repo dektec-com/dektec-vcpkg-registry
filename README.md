@@ -81,9 +81,12 @@ tag of the version asked for, with the DTAPI backend. It installs the plugin,
 `tools/gst-dektec`; point `GST_PLUGIN_PATH` at that `lib/gstreamer-1.0`. The plugin is
 loaded by the GStreamer installed on the system, so it is built against that one and not
 against vcpkg's `gstreamer` port: GStreamer 1.24 or newer with its development files has to
-be installed first, the official MSVC SDK on Windows (found through
-`GSTREAMER_1_0_ROOT_MSVC_X86_64`, or in `C:\gstreamer\1.0\msvc_x86_64`) and
-`libgstreamer1.0-dev` and `libgstreamer-plugins-base1.0-dev` on Linux. DTAPI and the other
+be installed first, the official MSVC SDK on Windows and `libgstreamer1.0-dev` and
+`libgstreamer-plugins-base1.0-dev` on Linux. The port finds the SDK through
+`GSTREAMER_1_0_ROOT_MSVC_X86_64` as a user or system environment variable, which its
+installer sets, or in `C:\gstreamer\1.0\msvc_x86_64`; vcpkg builds in a clean
+environment, so a variable set in the shell alone reaches it only through
+`VCPKG_KEEP_ENV_VARS=GSTREAMER_1_0_ROOT_MSVC_X86_64`. DTAPI and the other
 libraries are linked into the plugin, so on Windows use a static triplet,
 `x64-windows-static-md`; with a dynamic one the plugin needs their DLLs beside it. Like
 `ffmpeg-dektec`, the repository is private for now and vcpkg fetches it over SSH.
