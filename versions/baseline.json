@@ -11,6 +11,10 @@
     "ffmpeg-dektec": {
       "baseline": "9.0.2",
       "port-version": 2
+    },
+    "gst-dektec": {
+      "baseline": "0.1.0",
+      "port-version": 0
     }
   }
 }
