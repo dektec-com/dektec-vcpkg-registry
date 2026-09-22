@@ -101,7 +101,8 @@ libraries are linked into the plugin, so on Windows use a static triplet,
     ./publish.sh gst-dektec 0.2.0 "what changed" --tag v0.2.0
 
 It works out how the portfile fetches its source and follows it: for
-`vcpkg_from_github` it downloads the tarball of the tag and writes its SHA-512 down, for
+`vcpkg_from_github` it downloads the tarball of the tag and writes its SHA-512 down, and
+the tag itself where it is not `v<version>`, as the FFmpeg fork's are not, for
 `vcpkg_from_git` it asks the remote what the tag stands for and writes that commit,
 counting the port version up since the same software is built the same way, and for
 `vcpkg_download_distfile` it hashes every URL of the new version. Then it writes the

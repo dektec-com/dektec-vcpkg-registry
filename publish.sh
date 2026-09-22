@@ -13,8 +13,9 @@
 #
 # It works out what the port fetches and follows it:
 #
-#   vcpkg_from_github       downloads the tarball of the tag v<version> and writes its
-#                           SHA-512 into the portfile
+#   vcpkg_from_github       downloads the tarball of the tag v<version>, or of --tag, and
+#                           writes its SHA-512 into the portfile; a tag of another form, as
+#                           the FFmpeg fork's n9.0.2-dektec2 is, goes into the REF as well
 #   vcpkg_from_git          asks the remote what the tag stands for and writes that
 #                           commit and the tag into the portfile; the version stays and
 #                           the port version counts up, since the source is the same
@@ -112,6 +113,11 @@ if grep -q "vcpkg_from_github" "$Portfile"; then
     Hash="$(HashOf "https://github.com/$Repo/archive/refs/tags/$Ref.tar.gz")"
     echo "  SHA512 $Hash"
     SetHash 1 "$Hash"
+    # A REF of "v${VERSION}" follows the version by itself; any other tag is written in.
+    if [ "$Ref" != "v$Version" ]; then
+        sed -i "s|^\( *REF \).*$|\1$Ref|" "$Portfile"
+        sed -i "s|n[0-9][0-9.]*-dektec[0-9]*|$Ref|g" "$Portfile"
+    fi
 
 elif grep -q "vcpkg_from_git" "$Portfile"; then
     [ -n "$Tag" ] || { echo "This port fetches a tag: give --tag"; exit 1; }
