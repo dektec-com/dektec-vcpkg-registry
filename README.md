@@ -8,6 +8,7 @@ ports of DekTec's libraries, for a project that manages its dependencies with vc
 | `cdtapi` | The C API for DekTec SDI, DVB-ASI and SMPTE ST 2110 interfaces. BSD-3-Clause, built from source. |
 | `dtapi` | The C++ API for DekTec devices, as precompiled binaries. |
 | `ffmpeg-dektec` | FFmpeg with DekTec's devices and the `sdi` format, on `cdtapi`. LGPL, built from source. |
+| `gst-dektec` | The `dektec` GStreamer plugin for DekTec's SDI, DVB-ASI and SMPTE ST 2110 hardware. BSD-3-Clause, built from source. |
 
 ## Using it
 
@@ -25,7 +26,7 @@ Name this registry in `vcpkg-configuration.json`, beside your manifest:
       "kind": "git",
       "repository": "https://github.com/dektec-com/dektec-vcpkg-registry",
       "baseline": "<a commit of this repository>",
-      "packages": [ "cdtapi", "dtapi", "ffmpeg-dektec" ]
+      "packages": [ "cdtapi", "dtapi", "ffmpeg-dektec", "gst-dektec" ]
     }
   ]
 }
@@ -73,6 +74,20 @@ It installs the same libraries and headers as that port and cannot be installed 
 it. The fork's repository is private for now: vcpkg fetches it over SSH, so the port
 installs only for someone whose `git` can reach `git@github.com:dektec-com/ffmpeg-dektec`.
 
+**`gst-dektec`** is built from the sources at
+[github.com/dektec-com/gst-dektec](https://github.com/dektec-com/gst-dektec), from the
+tag of the version asked for, with the DTAPI backend. It installs the plugin,
+`lib/gstreamer-1.0/gstdektec.dll` or `libgstdektec.so`, and the `dt-probe` tool under
+`tools/gst-dektec`; point `GST_PLUGIN_PATH` at that `lib/gstreamer-1.0`. The plugin is
+loaded by the GStreamer installed on the system, so it is built against that one and not
+against vcpkg's `gstreamer` port: GStreamer 1.24 or newer with its development files has to
+be installed first, the official MSVC SDK on Windows (found through
+`GSTREAMER_1_0_ROOT_MSVC_X86_64`, or in `C:\gstreamer\1.0\msvc_x86_64`) and
+`libgstreamer1.0-dev` and `libgstreamer-plugins-base1.0-dev` on Linux. DTAPI and the other
+libraries are linked into the plugin, so on Windows use a static triplet,
+`x64-windows-static-md`; with a dynamic one the plugin needs their DLLs beside it. Like
+`ffmpeg-dektec`, the repository is private for now and vcpkg fetches it over SSH.
+
 ## Keeping it up to date (DekTec)
 
 `publish.sh` publishes a new version of a port:
@@ -80,6 +95,7 @@ installs only for someone whose `git` can reach `git@github.com:dektec-com/ffmpe
     ./publish.sh cdtapi 6.13.4 "what changed"
     ./publish.sh ffmpeg-dektec 9.0.2 "what changed" --tag n9.0.2-dektec2
     ./publish.sh dtapi 6.13.1 "what changed"
+    ./publish.sh gst-dektec 0.2.0 "what changed" --tag v0.2.0
 
 It works out how the portfile fetches its source and follows it: for
 `vcpkg_from_github` it downloads the tarball of the tag and writes its SHA-512 down, for
@@ -102,8 +118,8 @@ it, on every platform it supports:
     vcpkg install <port>:x64-windows --overlay-ports=./ports
     vcpkg install <port>:x64-linux --overlay-ports=./ports
 
-The source has to be published before its hash means anything: for `cdtapi` and
-`ffmpeg-dektec` that is the tag on GitHub, and a tag that moves afterwards invalidates
+The source has to be published before its hash means anything: for `cdtapi`,
+`ffmpeg-dektec` and `gst-dektec` that is the tag on GitHub, and a tag that moves afterwards invalidates
 the hash; for `dtapi` it is the archive of binaries on dektec.com, which is put there by
 hand, so a new DTAPI goes onto the website first and into the registry after. The
 `cdtapi` tag's own Release names the hash as well, which is the same number `publish.sh`

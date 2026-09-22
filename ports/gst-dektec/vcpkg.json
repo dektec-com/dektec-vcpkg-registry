@@ -1,0 +1,35 @@
+{
+  "name": "gst-dektec",
+  "version": "0.1.0",
+  "description": [
+    "GStreamer plugins for DekTec SDI, DVB-ASI and SMPTE ST 2110 hardware.",
+    "The dektec GStreamer plugin on DTAPI. It builds against the GStreamer installed on the system, 1.24 or newer: the official MSVC SDK on Windows, the distribution's development packages on Linux."
+  ],
+  "homepage": "https://github.com/dektec-com/gst-dektec",
+  "license": "BSD-3-Clause",
+  "supports": "x64 & (windows | linux)",
+  "dependencies": [
+    {
+      "name": "dtapi",
+      "platform": "linux"
+    },
+    {
+      "name": "dtapi",
+      "features": [
+        "vc17"
+      ],
+      "platform": "windows"
+    },
+    "highway",
+    "libsamplerate",
+    {
+      "name": "pkgconf",
+      "host": true,
+      "platform": "windows"
+    },
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    }
+  ]
+}
