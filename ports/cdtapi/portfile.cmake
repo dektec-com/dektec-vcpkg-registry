@@ -13,7 +13,7 @@ vcpkg_from_github(
   OUT_SOURCE_PATH SOURCE_PATH
   REPO dektec-com/cdtapi
   REF "v${VERSION}"
-  SHA512 4d32974c0fa580b7eddeede7f5011141e27a5ced8a6f266a8219b62ba4817bb5c6194a9b47d94ef1d14102a485cfa2edd22e2cf9f5361915ed186afd2cd2911e)
+  SHA512 436ca6595b39e9372424e440a34f5a72cd79b8d444d8fb19727e18c506638b7ae3584935587bef94cbefe537d096e4dbc72b30b52a79bf40b8bac562b4627b1b)
 
 ## +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+ Build +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 ## +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
