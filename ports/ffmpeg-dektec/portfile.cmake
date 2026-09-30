@@ -1,10 +1,9 @@
-# DekTec's fork at its release n9.0.2-dektec5, private for now: git fetches it with the
-# user's own access to it.
-vcpkg_from_git(
+# DekTec's fork at its release n9.0.2-dektec5.
+vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
-    URL git@github.com:dektec-com/ffmpeg-dektec.git
-    REF f8611b0c6f3b9e49f63501376d10ab8551af8e51
-    FETCH_REF n9.0.2-dektec5
+    REPO dektec-com/ffmpeg-dektec
+    REF n9.0.2-dektec5
+    SHA512 d0287300a81b5fc592d139fcc2542225f3a76109618afab701f80af6e7d382620485851679d3a8531252b0f9ac99c96205a7c64172f8d33c5c421cf6d6a31976
     HEAD_REF dektec
     PATCHES
         0003-fix-windowsinclude.patch

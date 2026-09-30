@@ -70,9 +70,7 @@ mutually exclusive, and without a feature the port follows the platform toolset.
 source, [github.com/dektec-com/ffmpeg-dektec](https://github.com/dektec-com/ffmpeg-dektec),
 built with `--enable-libcdtapi`: the `dektec` input and output device and the `sdi`
 format come with FFmpeg's libraries, and its features are those of the `ffmpeg` port.
-It installs the same libraries and headers as that port and cannot be installed beside
-it. The fork's repository is private for now: vcpkg fetches it over SSH, so the port
-installs only for someone whose `git` can reach `git@github.com:dektec-com/ffmpeg-dektec`.
+It installs the same libraries and headers as that port and cannot be installed beside it.
 
 **`gst-dektec`** is built from the sources at
 [github.com/dektec-com/gst-dektec](https://github.com/dektec-com/gst-dektec), from the
@@ -88,8 +86,9 @@ installer sets, or in `C:\gstreamer\1.0\msvc_x86_64`; vcpkg builds in a clean
 environment, so a variable set in the shell alone reaches it only through
 `VCPKG_KEEP_ENV_VARS=GSTREAMER_1_0_ROOT_MSVC_X86_64`. DTAPI and the other
 libraries are linked into the plugin, so on Windows use a static triplet,
-`x64-windows-static-md`; with a dynamic one the plugin needs their DLLs beside it. Like
-`ffmpeg-dektec`, the repository is private for now and vcpkg fetches it over SSH.
+`x64-windows-static-md`; with a dynamic one the plugin needs their DLLs beside it. The
+repository is private for now: vcpkg fetches it over SSH, so the port installs only for
+someone whose `git` can reach `git@github.com:dektec-com/gst-dektec`.
 
 ## Keeping it up to date (DekTec)
 
