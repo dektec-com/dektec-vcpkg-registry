@@ -13,7 +13,7 @@ vcpkg_from_github(
   OUT_SOURCE_PATH SOURCE_PATH
   REPO dektec-com/dtnmos
   REF "v${VERSION}"
-  SHA512 8c9eb1421f61dbd03d182f300eb0f0857445f6ef1aed209a3be47d31a64e13ea3aba699d6bae83e9695287076a1b19eb568d771dbe7a4e3863c0427289333cce)
+  SHA512 add5c40a272c0b61a9f9da585720e61cfdfab9a6389f756b0b7added437df38a2676feb32b83414a403900ec9ec7d8c1203a139e7cd66a6a2b2e0ba544055917)
 
 ## +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+ Build +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 ## +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
