@@ -24,13 +24,14 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
     server DTNMOS_WITH_SERVER)
 
 ## The library builds a static or a shared library from BUILD_SHARED_LIBS, which vcpkg sets from the triplet's
-## linkage. The tests are the library's own; a consumer does not install them. Warnings are not errors here:
-## a customer's compiler is newer than the one the release was built with, and a warning it has learned since
-## must not fail their install.
+## linkage. The tests and the examples are the library's own; a consumer does not install them. Warnings are
+## not errors here: a customer's compiler is newer than the one the release was built with, and a warning it
+## has learned since must not fail their install.
 vcpkg_cmake_configure(
   SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
     ${FEATURE_OPTIONS}
+    -DDTNMOS_BUILD_EXAMPLES=OFF
     -DDTNMOS_BUILD_TESTS=OFF
     -DDTNMOS_INSTALL=ON
     -DDTNMOS_WARNINGS_AS_ERRORS=OFF)
