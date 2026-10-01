@@ -7,6 +7,7 @@ ports of DekTec's libraries, for a project that manages its dependencies with vc
 |---|---|
 | `cdtapi` | The C API for DekTec SDI, DVB-ASI and SMPTE ST 2110 interfaces. BSD-3-Clause, built from source. |
 | `dtapi` | The C++ API for DekTec devices, as precompiled binaries. |
+| `dtnmos` | The SDP of SMPTE ST 2110 flows, and NMOS IS-04 and IS-05, in C. BSD-3-Clause, built from source. |
 | `ffmpeg-dektec` | FFmpeg with DekTec's devices and the `sdi` format, on `cdtapi`. LGPL, built from source. |
 | `gst-dektec` | The `dektec` GStreamer plugin for DekTec's SDI, DVB-ASI and SMPTE ST 2110 hardware. BSD-3-Clause, built from source. |
 
@@ -26,7 +27,7 @@ Name this registry in `vcpkg-configuration.json`, beside your manifest:
       "kind": "git",
       "repository": "https://github.com/dektec-com/dektec-vcpkg-registry",
       "baseline": "<a commit of this repository>",
-      "packages": [ "cdtapi", "dtapi", "ffmpeg-dektec", "gst-dektec" ]
+      "packages": [ "cdtapi", "dtapi", "dtnmos", "ffmpeg-dektec", "gst-dektec" ]
     }
   ]
 }
@@ -47,7 +48,7 @@ build resolves; `git ls-remote https://github.com/dektec-com/dektec-vcpkg-regist
 gives the newest of this one. Naming a commit rather than a branch is what makes a build
 reproducible.
 
-`cdtapi` and `dtapi` provide a CMake package:
+`cdtapi`, `dtapi` and `dtnmos` provide a CMake package:
 
 ```cmake
 find_package(cdtapi CONFIG REQUIRED)
@@ -65,6 +66,13 @@ installed. Supported triplets are the x64 ones of Windows and Linux.
 **`dtapi`** installs precompiled binaries. On Windows the features `vc15`, `vc16` and
 `vc17` choose which Visual Studio version's binaries are installed; pick one. They are
 mutually exclusive, and without a feature the port follows the platform toolset.
+
+**`dtnmos`** is built from the sources at
+[github.com/dektec-com/dtnmos](https://github.com/dektec-com/dtnmos), from the tag of the
+version asked for. Without features it has no dependencies: it reads and writes SDP, and
+takes the HTTP of NMOS through a function the program passes in. The feature `curl` adds
+its HTTP and WebSocket client on libcurl, and `server` the HTTP server of a node on
+civetweb. Its version is below 1.0, and a minor version may still change its API.
 
 **`ffmpeg-dektec`** is vcpkg's own `ffmpeg` port with DekTec's fork of FFmpeg as its
 source, [github.com/dektec-com/ffmpeg-dektec](https://github.com/dektec-com/ffmpeg-dektec),

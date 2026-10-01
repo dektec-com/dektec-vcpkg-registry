@@ -1,0 +1,41 @@
+{
+  "name": "dtnmos",
+  "version": "0.1.1",
+  "description": "C library for the SDP of SMPTE ST 2110 flows and for NMOS: IS-04 discovery, registration and query, and IS-05 connection management",
+  "homepage": "https://github.com/dektec-com/dtnmos",
+  "license": "BSD-3-Clause",
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    }
+  ],
+  "features": {
+    "curl": {
+      "description": "HTTP and WebSockets on libcurl, for talking to registries",
+      "dependencies": [
+        {
+          "name": "curl",
+          "default-features": false,
+          "features": [
+            "ssl",
+            "websockets"
+          ]
+        }
+      ]
+    },
+    "server": {
+      "description": "The HTTP server of a node, on civetweb, for its Node and Connection APIs",
+      "dependencies": [
+        {
+          "name": "civetweb",
+          "default-features": false
+        }
+      ]
+    }
+  }
+}
