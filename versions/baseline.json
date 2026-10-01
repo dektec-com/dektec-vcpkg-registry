@@ -8,6 +8,10 @@
       "baseline": "6.14.0",
       "port-version": 0
     },
+    "dtnmos": {
+      "baseline": "0.1.1",
+      "port-version": 0
+    },
     "ffmpeg-dektec": {
       "baseline": "9.0.2",
       "port-version": 6
