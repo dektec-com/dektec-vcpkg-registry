@@ -14,5 +14,20 @@
       "name": "vcpkg-cmake-config",
       "host": true
     }
-  ]
+  ],
+  "features": {
+    "nmos": {
+      "description": "The NMOS bridge of the AV FIFO, on dtnmos with its HTTP client and server",
+      "dependencies": [
+        {
+          "name": "dtnmos",
+          "version>=": "0.5.0",
+          "features": [
+            "curl",
+            "server"
+          ]
+        }
+      ]
+    }
+  }
 }

@@ -25,12 +25,18 @@ else()
   set(CDTAPI_SHARED OFF)
 endif()
 
+## The feature nmos builds the NMOS bridge into the library, which then links dtnmos.
+vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
+  FEATURES
+    nmos CDTAPI_WITH_NMOS)
+
 ## The tests and the examples are the library's own; a consumer installs neither. Warnings are not errors
 ## here: a customer's compiler is newer than the one the release was built with, and a warning it has
 ## learned since must not fail their install.
 vcpkg_cmake_configure(
   SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
+    ${FEATURE_OPTIONS}
     -DCDTAPI_BUILD_SHARED=${CDTAPI_SHARED}
     -DCDTAPI_BUILD_TESTS=OFF
     -DCDTAPI_BUILD_EXAMPLES=OFF
