@@ -500,6 +500,21 @@
         "mp3lame"
       ]
     },
+    "nmos": {
+      "description": "The dektec device's NMOS: an input's streams as receivers and an output's as senders, through CDTAPI's NMOS bridge",
+      "dependencies": [
+        {
+          "name": "cdtapi",
+          "features": [
+            "nmos"
+          ]
+        },
+        {
+          "name": "dtnmos",
+          "version>=": "0.5.1"
+        }
+      ]
+    },
     "nonfree": {
       "description": "Allow use of nonfree code, the resulting libs and binaries will be unredistributable"
     },

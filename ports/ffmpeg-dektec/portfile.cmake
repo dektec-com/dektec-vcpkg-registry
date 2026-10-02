@@ -39,6 +39,11 @@ set(OPTIONS "--enable-pic --disable-doc --enable-runtime-cpudetect --disable-aut
 # DekTec's devices and the sdi format, on CDTAPI.
 set(OPTIONS "${OPTIONS} --enable-libcdtapi")
 
+# The dektec device's NMOS, through CDTAPI's NMOS bridge.
+if("nmos" IN_LIST FEATURES)
+    set(OPTIONS "${OPTIONS} --enable-libcdtapi-nmos")
+endif()
+
 if(VCPKG_TARGET_IS_MINGW)
     if(VCPKG_TARGET_ARCHITECTURE STREQUAL "x86")
         string(APPEND OPTIONS " --target-os=mingw32")
