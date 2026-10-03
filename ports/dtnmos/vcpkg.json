@@ -1,6 +1,6 @@
 {
   "name": "dtnmos",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "C library for the SDP of SMPTE ST 2110 flows and for NMOS: IS-04 discovery, registration and query, and IS-05 connection management",
   "homepage": "https://github.com/dektec-com/dtnmos",
   "license": "BSD-3-Clause",
