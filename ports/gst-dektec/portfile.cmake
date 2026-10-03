@@ -55,6 +55,7 @@ vcpkg_cmake_configure(
   SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
     -DDTGST_WITH_DTAPI=ON
+    -DDTGST_WITH_NMOS=ON
     -DDTGST_BUILD_PLUGIN=ON
     -DDTGST_BUILD_TESTS=OFF
     -DDTGST_WARNINGS_AS_ERRORS=OFF)
@@ -75,7 +76,10 @@ set(VCPKG_POLICY_DLLS_WITHOUT_EXPORTS enabled)
 ## dt-probe reports the devices and the backends the plugin sees; it goes where vcpkg keeps tools.
 vcpkg_copy_tools(TOOL_NAMES dt-probe AUTO_CLEAN)
 
-## The licence texts of the libraries linked into the plugin go with its own, in the copyright file.
-file(REMOVE "${CURRENT_PACKAGES_DIR}/THIRD-PARTY-NOTICES" "${CURRENT_PACKAGES_DIR}/debug/THIRD-PARTY-NOTICES")
+## The project installs its LICENSE and, in licenses/, those of the libraries linked in, for a package that
+## stands alone. In vcpkg each of those libraries is a port with its own copyright file, so only the plugin's
+## own licence is installed here.
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/LICENSE" "${CURRENT_PACKAGES_DIR}/licenses"
+  "${CURRENT_PACKAGES_DIR}/debug/LICENSE" "${CURRENT_PACKAGES_DIR}/debug/licenses")
 
-vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/LICENSE" "${SOURCE_PATH}/THIRD-PARTY-NOTICES")
+vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/LICENSE")

@@ -20,6 +20,14 @@
       ],
       "platform": "windows"
     },
+    {
+      "name": "dtnmos",
+      "features": [
+        "curl",
+        "server"
+      ],
+      "version>=": "0.5.0"
+    },
     "highway",
     "libsamplerate",
     {
