@@ -7,9 +7,12 @@ ports of DekTec's libraries, for a project that manages its dependencies with vc
 |---|---|
 | `cdtapi` | The C API for DekTec SDI, DVB-ASI and SMPTE ST 2110 interfaces. BSD-3-Clause, built from source. |
 | `dtapi` | The C++ API for DekTec devices, as precompiled binaries. |
-| `dtnmos` | The SDP of SMPTE ST 2110 flows, and NMOS IS-04 and IS-05, in C. BSD-3-Clause, built from source. |
+| `dtnmos` | The SDP of SMPTE ST 2110 flows, and NMOS IS-04 and IS-05, in C, with a C++ API on top for C++20 and C++23. BSD-3-Clause, built from source. |
 | `ffmpeg-dektec` | FFmpeg with DekTec's devices and the `sdi` format, on `cdtapi`. LGPL, built from source. |
 | `gst-dektec` | The `dektec` GStreamer plugin for DekTec's SDI, DVB-ASI and SMPTE ST 2110 hardware. BSD-3-Clause, built from source. |
+
+Besides `dtnmos::dtnmos`, its CMake package has the target `dtnmos::cpp` for its C++
+API, which a program on C++20 or C++23 links instead.
 
 ## Using it
 
