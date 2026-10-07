@@ -9,7 +9,7 @@
       "port-version": 0
     },
     "dtnmos": {
-      "baseline": "0.5.2",
+      "baseline": "0.5.3",
       "port-version": 0
     },
     "ffmpeg-dektec": {
