@@ -85,7 +85,7 @@ It installs the same libraries and headers as that port and cannot be installed 
 
 **`gst-dektec`** is built from the sources at
 [github.com/dektec-com/gst-dektec](https://github.com/dektec-com/gst-dektec), from the
-tag of the version asked for, with the DTAPI backend. It installs the plugin,
+tag of the version asked for, with the card backend on CDTAPI. It installs the plugin,
 `lib/gstreamer-1.0/gstdektec.dll` or `libgstdektec.so`, and the `dt-probe` tool under
 `tools/gst-dektec`; point `GST_PLUGIN_PATH` at that `lib/gstreamer-1.0`. The plugin is
 loaded by the GStreamer installed on the system, so it is built against that one and not
@@ -95,7 +95,7 @@ be installed first, the official MSVC SDK on Windows and `libgstreamer1.0-dev` a
 `GSTREAMER_1_0_ROOT_MSVC_X86_64` as a user or system environment variable, which its
 installer sets, or in `C:\gstreamer\1.0\msvc_x86_64`; vcpkg builds in a clean
 environment, so a variable set in the shell alone reaches it only through
-`VCPKG_KEEP_ENV_VARS=GSTREAMER_1_0_ROOT_MSVC_X86_64`. DTAPI and the other
+`VCPKG_KEEP_ENV_VARS=GSTREAMER_1_0_ROOT_MSVC_X86_64`. CDTAPI and the other
 libraries are linked into the plugin, so on Windows use a static triplet,
 `x64-windows-static-md`; with a dynamic one the plugin needs their DLLs beside it. The
 repository is private for now: vcpkg fetches it over SSH, so the port installs only for

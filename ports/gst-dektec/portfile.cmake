@@ -3,7 +3,7 @@
 ## vcpkg port file for gst-dektec, the GStreamer plugin for DekTec SDI, DVB-ASI and SMPTE ST 2110 hardware.
 ##
 ## The plugin is a module that the GStreamer on the system loads, so it is built against that GStreamer and
-## not against vcpkg's: the official MSVC SDK on Windows, the distribution's packages on Linux. DTAPI and the
+## not against vcpkg's: the official MSVC SDK on Windows, the distribution's packages on Linux. CDTAPI and the
 ## other libraries it uses are linked into it, which is why a static triplet suits it best.
 
 ## +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
@@ -54,7 +54,7 @@ endif()
 vcpkg_cmake_configure(
   SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
-    -DDTGST_WITH_DTAPI=ON
+    -DDTGST_WITH_CDTAPI=ON
     -DDTGST_WITH_NMOS=ON
     -DDTGST_BUILD_PLUGIN=ON
     -DDTGST_BUILD_TESTS=OFF
