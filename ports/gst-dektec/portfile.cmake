@@ -15,8 +15,8 @@
 vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
     URL git@github.com:dektec-com/gst-dektec.git
-    REF 6e54ddc910f39d0895e090e273d286d340762e7d
-    FETCH_REF v0.2.0
+    REF 921eeb20f32f55dad37718934fb70b222e4fb383
+    FETCH_REF v0.3.0
     HEAD_REF main
 )
 

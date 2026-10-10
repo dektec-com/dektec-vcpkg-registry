@@ -1,6 +1,6 @@
 {
   "name": "gst-dektec",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": [
     "GStreamer plugins for DekTec SDI, DVB-ASI and SMPTE ST 2110 hardware.",
     "The dektec GStreamer plugin on CDTAPI. It builds against the GStreamer installed on the system, 1.24 or newer: the official MSVC SDK on Windows, the distribution's development packages on Linux."
