@@ -12,7 +12,7 @@
   "dependencies": [
     {
       "name": "cdtapi",
-      "version>=": "6.14.10"
+      "version>=": "6.14.11"
     },
     {
       "name": "ffmpeg-bin2c",
