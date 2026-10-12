@@ -1,9 +1,9 @@
-# DekTec's fork at its release n9.0.2-dektec10.
+# DekTec's fork at its release n9.0.2-dektec11.
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO dektec-com/ffmpeg-dektec
-    REF n9.0.2-dektec10
-    SHA512 114f4eff52431e0b96bfcdbd3ad96716e66d5d74b52fe2564148b4010b6784032206e3e3ffeec4828b9ba73007e4e8524f0d6aa98b3e1ed710418de99757d0d2
+    REF n9.0.2-dektec11
+    SHA512 9deb1c0bbf9c4e28aa694ef247747203c391bbcbe4689a2860992dbef772dc4a65e21968e23d3039787703383f982b38939a1b8b682c7604273a3e957ffd6415
     HEAD_REF dektec
     PATCHES
         0003-fix-windowsinclude.patch
